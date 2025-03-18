@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manajemen Pupuk</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+  <div id="app" class="container py-4">
+    <h1 class="text-center">Manajemen Pupuk</h1>
+
+    <!-- Form Input Pupuk -->
+    <div class="my-4">
+      <h3>Tambah Pupuk</h3>
+      <div class="mb-3">
+        <label for="namaPupuk" class="form-label">Nama Pupuk</label>
+        <input type="text" class="form-control" v-model="newPupuk.nama" placeholder="Nama Pupuk">
+      </div>
+      <div class="mb-3">
+        <label for="harga" class="form-label">Harga (IDR)</label>
+        <input type="number" class="form-control" v-model="newPupuk.harga" placeholder="Harga Pupuk">
+      </div>
+      <div class="mb-3">
+        <label for="stok" class="form-label">Stok</label>
+        <input type="number" class="form-control" v-model="newPupuk.stok" placeholder="Stok Pupuk">
+      </div>
+      <button class="btn btn-primary" @click="tambahPupuk">Tambah Pupuk</button>
+    </div>
+
+    <!-- Tabel Barang -->
+    <h3>Tabel Barang</h3>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Nama Pupuk</th>
+          <th>Harga</th>
+          <th>Stok</th>
+          <th>Total Harga Stok</th>
+          <th>Edit</th>
+          <th>Hapus</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(pupuk, index) in pupukList" :key="index">
+          <td>{{ pupuk.nama }}</td>
+          <td>{{ pupuk.harga }}</td>
+          <td>{{ pupuk.stok }}</td>
+          <td>{{ pupuk.harga * pupuk.stok }}</td> <!-- Total Harga Stok -->
+          <td><button class="btn btn-info" @click="editPupuk(index)">Edit</button></td>
+          <td><button class="btn btn-danger" @click="hapusBarang(index)">Hapus</button></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Kasir (Barang yang Diambil) -->
+    <div class="my-4">
+      <h3>Barang yang Diambil</h3>
+      <div class="mb-3">
+        <label for="pupukKasir" class="form-label">Nama Pupuk</label>
+        <select class="form-control" v-model="selectedPupukIndex">
+          <option value="">Pilih Pupuk</option>
+          <option v-for="(pupuk, index) in pupukList" :value="index">{{ pupuk.nama }}</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="jumlah" class="form-label">Jumlah</label>
+        <input type="number" class="form-control" v-model="jumlah" min="1">
+      </div>
+      <div class="mb-3">
+        <label for="namaSupir" class="form-label">Nama Supir</label>
+        <input type="text" class="form-control" v-model="namaSupir">
+      </div>
+      <div class="mb-3">
+        <label for="tanggalPengambilan" class="form-label">Tanggal Pengambilan</label>
+        <input type="date" class="form-control" v-model="tanggalPengambilan">
+      </div>
+      <button class="btn btn-success" @click="prosesPenjualan">Proses Penjualan</button>
+    </div>
+
+    <!-- Tabel Penjualan -->
+    <h3>Tabel Penjualan</h3>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Nama Pupuk</th>
+          <th>Harga</th>
+          <th>Jumlah</th>
+          <th>Total</th>
+          <th>Supir</th>
+          <th>Tanggal</th>
+          <th>Edit</th>
+          <th>Hapus</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(penjualan, index) in penjualanList" :key="index">
+          <td>{{ penjualan.nama }}</td>
+          <td>{{ penjualan.harga }}</td>
+          <td>{{ penjualan.jumlah }}</td>
+          <td>{{ penjualan.total }}</td>
+          <td>{{ penjualan.supir }}</td>
+          <td>{{ penjualan.tanggal }}</td>
+          <td><button class="btn btn-info" @click="editPenjualan(index)">Edit</button></td>
+          <td><button class="btn btn-danger" @click="hapusPenjualan(index)">Hapus</button></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Total Penjualan -->
+    <div class="my-4">
+      <h3>Total Penjualan: {{ totalPenjualan }} IDR</h3>
+    </div>
+
+   
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
